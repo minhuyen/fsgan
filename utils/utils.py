@@ -6,9 +6,13 @@ import torch
 import random
 import torch.nn.init as init
 import warnings
+import requests
+from tqdm import tqdm
 import torch.backends.cudnn as cudnn
 
 # Adapted from: https://github.com/Sudy/coling2018/blob/master/torchtext/utils.py
+
+
 def download_from_url(url, output_path):
     """ Download file from url including Google Drive.
     Args:
@@ -26,7 +30,8 @@ def download_from_url(url, output_path):
                         t.update(len(chunk))
 
     if 'drive.google.com' not in url:
-        response = requests.get(url, headers={'User-Agent': 'Mozilla/5.0'}, stream=True)
+        response = requests.get(
+            url, headers={'User-Agent': 'Mozilla/5.0'}, stream=True)
         process_response(response)
         return
 
@@ -64,7 +69,8 @@ def init_weights(m, init_type='normal', gain=0.02):
         elif init_type == 'orthogonal':
             init.orthogonal_(m.weight.data, gain=gain)
         else:
-            raise NotImplementedError('initialization method [%s] is not implemented' % init_type)
+            raise NotImplementedError(
+                'initialization method [%s] is not implemented' % init_type)
         if hasattr(m, 'bias') and m.bias is not None:
             init.constant_(m.bias.data, 0.0)
     elif classname.find('BatchNorm2d') != -1:
@@ -84,7 +90,8 @@ def save_checkpoint(exp_dir, base_name, state, is_best=False):
     filename = os.path.join(exp_dir, base_name + '_latest.pth')
     torch.save(state, filename)
     if is_best:
-        shutil.copyfile(filename, os.path.join(exp_dir, base_name + '_best.pth'))
+        shutil.copyfile(filename, os.path.join(
+            exp_dir, base_name + '_best.pth'))
 
 
 class ImagePool:
@@ -95,6 +102,7 @@ class ImagePool:
     Args:
         pool_size (int): The maximum number of images in the pool
     """
+
     def __init__(self, pool_size=50):
         self.pool_size = pool_size
         if self.pool_size > 0:
@@ -114,7 +122,8 @@ class ImagePool:
             else:
                 p = random.uniform(0, 1)
                 if p > 0.5:
-                    random_id = random.randint(0, self.pool_size - 1)  # randint is inclusive
+                    random_id = random.randint(
+                        0, self.pool_size - 1)  # randint is inclusive
                     tmp = self.images[random_id].clone()
                     self.images[random_id] = image
                     return_images.append(tmp)
@@ -179,7 +188,8 @@ def set_device(gpus=None, use_cuda=None):
     else:
         gpus = None
         print('=> using CPU device')
-    device = torch.device('cuda:{}'.format(gpus[0])) if gpus else torch.device('cpu')
+    device = torch.device('cuda:{}'.format(
+        gpus[0])) if gpus else torch.device('cpu')
 
     return device, gpus
 
@@ -207,6 +217,7 @@ def topk_accuracy(output, target, topk=(1,)):
 
 class AverageMeter(object):
     """ Computes and stores the average and current value. """
+
     def __init__(self):
         self.reset()
 
