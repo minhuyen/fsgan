@@ -330,9 +330,6 @@ def main(source_path, target_path,
             if cv2.waitKey(1) & 0xFF == ord('q'):
                 break
 
-    ffmpeg.concat(ffmpeg.input(output_path), ffmpeg.input(target_path), v=1, a=1) \
-        .output(output_with_audio_path, strict='-2').run(overwrite_output=True)
-
 
 if __name__ == "__main__":
     # Parse program arguments
@@ -381,3 +378,7 @@ if __name__ == "__main__":
     main(args.source, args.target, args.arch, args.reenactment_model, args.seg_model, args.inpainting_model,
          args.blending_model, args.pose_model, args.pil_transforms1, args.pil_transforms2, args.tensor_transforms1,
          args.tensor_transforms2, args.output, args.crop_size, args.verbose, args.output_crop, args.display)
+
+    output_with_audio_path = '/content/audio'
+    ffmpeg.concat(ffmpeg.input(output_path), ffmpeg.input(target_path), v=1, a=1) \
+        .output(output_with_audio_path, strict='-2').run(overwrite_output=True)
