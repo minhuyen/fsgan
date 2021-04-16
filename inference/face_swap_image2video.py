@@ -7,7 +7,7 @@ import numpy as np
 from tqdm import tqdm
 from PIL import Image
 import torch
-import ffmpeg
+# import ffmpeg
 import fsgan.data.landmark_transforms as landmark_transforms
 import fsgan.utils.utils as utils
 from fsgan.utils.seg_utils import blend_seg_pred
@@ -379,6 +379,6 @@ if __name__ == "__main__":
          args.blending_model, args.pose_model, args.pil_transforms1, args.pil_transforms2, args.tensor_transforms1,
          args.tensor_transforms2, args.output, args.crop_size, args.verbose, args.output_crop, args.display)
 
-    output_with_audio_path = '/content/audio'
-    ffmpeg.concat(ffmpeg.input(output_path), ffmpeg.input(target_path), v=1, a=1) \
-        .output(output_with_audio_path, strict='-2').run(overwrite_output=True)
+    # output_with_audio_path = '/content/audio'
+    # ffmpeg.concat(ffmpeg.input(output_path), ffmpeg.input(target_path), v=1, a=1) \
+    #     .output(output_with_audio_path, strict='-2').run(overwrite_output=True)
